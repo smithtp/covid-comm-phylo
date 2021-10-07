@@ -4,6 +4,8 @@ The COVID-19 pandemic provides an unprecedented opportunity to develop and test 
 
 ## Preliminary work with NextStrain
 
+To re-calculate the community phylogenetic metrics, run: ```Rscript src/phylo_shape.R``` to re-create the plots, run: ```Rscript src/phylo_results.R```.
+
 I downloaded the NextStrain Europe tree and metadata as a starting point (see nextstrain_ncov_europe_timetree_20210426.tre and nextstrain_ncov_europe_metadata_20210426.tsv). I then binned the phylogeny by date into months and calculated mpd and mntd for each country across each month using pez. 
 
 From pez, '.obs.z' is the Standardised effect size; mpd.z = -NRI; mntd.z = -NTI. (NRI = "Net related index", NTI = "Nearest taxon index").

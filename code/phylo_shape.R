@@ -14,12 +14,6 @@ library(tidyr)
 library(dplyr)
 library(lubridate)
 
-setwd("~/Documents/covid-comm-phylo/")
-
-# Headers
-# source("src/packages.R")
-
-
 ### Function to calculate and return shape/dispersion metrics
 ### for a given month
 ### (now just returning dispersion metric)

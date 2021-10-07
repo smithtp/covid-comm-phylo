@@ -10,8 +10,6 @@ library(tidyr)
 library(dplyr)
 library(lubridate)
 
-setwd("~/Documents/covid-comm-phylo/")
-
 # ggplotting theme:
 main_theme <- theme(axis.line = element_line(colour = "black"),
                     panel.grid.major = element_blank(),
