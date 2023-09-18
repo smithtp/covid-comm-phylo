@@ -319,4 +319,4 @@ rm(first, last)
 
 keep(euro_disp, ger_disp, french_disp, spain_disp, italy_disp,
      sure = T)
-save.image("model_dfs.RData")
+save.image("data/model_dfs.RData")

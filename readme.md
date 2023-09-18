@@ -2,37 +2,41 @@
 
 The COVID-19 pandemic provides an unprecedented opportunity to develop and test new metrics and methods for spotting disease outbreaks. Can classic metrics of ecological community structure (specifically, MPD and MNTD) tell us anything useful about how the COVID variants have spread through time and could these be a useful addition to traditional phylogenetic tools in studying outbreaks? 
 
-## Preliminary work with NextStrain
+## Repository Contents:
 
-To re-calculate the community phylogenetic metrics, run: ```Rscript src/phylo_shape.R``` to re-create the plots, run: ```Rscript src/phylo_results.R```.
+### Data 
+All trees, meta data and dispersion metrics dataframes can be found in `data` 
+folder. Manon Ragonnet-Cronin from the phylodynamics team investigating COVID
+at Imperial generated the German, French, Italian and Spainish trees. The European tree was downloaded from NextStrain on 2021-04-26.
 
-I downloaded the NextStrain Europe tree and metadata as a starting point (see nextstrain_ncov_europe_timetree_20210426.tre and nextstrain_ncov_europe_metadata_20210426.tsv). I then binned the phylogeny by date into months and calculated mpd and mntd for each country across each month using pez. 
+### Code
 
-From pez, '.obs.z' is the Standardised effect size; mpd.z = -NRI; mntd.z = -NTI. (NRI = "Net related index", NTI = "Nearest taxon index").
+Scripts to run analysis and produce figures, in order:
 
- * clustering = more species per genus than expected = positive NRI & NTI
- * overdispersed = less species per genus than expected = negative NRI & NTI
+ 1. `phylo_shape.R` - Reads the phylogenies and creates community phylogenetic metrics. Script is separated by the different datasets, producing a `data/$_dispersion.csv` for each dataset (where `$` = Europe/Germany/Italy/Spain/France). All metadata is also collected in `data/metas.RData`.
+ 2. `data-wrangling.R` - creates additional variables for analyses. Reads the dispersion metrics and metadata files, produces `data/model_dfs.RData`.
+ 3. `phylo-results.R` - main analysis code. Reads `data/model_dfs.RData`, creates figures and runs GAM models.
+ 4. `maps.R` - plots spatial varition in dispersion metrics through time.
+ 5. `exploratory.R` - a boat-load of additional exploratory figures to investigate whats going on in the datasets. See `Jess_EcoCovid_Notes.pdf` for a more detailed explanation of what was being tested here.
 
-Plotting these through time for the Europe data shows a (possibly interesting?) hump-shaped pattern of increasing then decreasing clustering through time.
+### Phylogenetic dispersion metrics 
+To re-calculate metrics run `code/phylo_shape.R`, some of these take a long time 
+to run. From pez, '.obs.z' is the Standardised effect size; mpd.z = -NRI; mntd.z = -NTI. d.D = D
+(NRI = "Net related index", NTI = "Nearest taxon index").
 
-![](results/europe_mntd_z.svg)
+NRI & NTI:
+ * Positive NRI & NTI = clustering = more species per genus than expected 
+ * Negative NRI & NTI = overdispersed = less species per genus than expected 
 
-![](results/europe_mpd_z.svg)
+D: 
+ * 1 = Random with respect to phylo
+ * 0 = Expected with Brownian motion
+ * &gt; 1 = More overdispersion than expected by random
+ * &lt; 0 = More clustered than expect under brownian
 
-Each point is a country. Red points picked out are the UK, just out of interest. Increasing size of points shows number of sequences in the tree for that country. This is not even through time, the NextStrain methodology samples more sequences closer to the current date.
 
-## Preliminary work with in-house phylogeny
+### Results
 
-The NextStrain tree is big, but covers so many countries that there can be quite few sequences per country for each month. Also the uneven sampling through time doesn't seem ideal.
-
-We decided to focus down more on a single country and see if the same pattern comes out in the data. We picked Germany as this has had a large amount of sequencing effort, and it has a decent amount of sub-divisions (16 provinces) that the GIDAID sequences are located to in the metadata (the UK isn't as good on this front, because sequences in GISAID are only subdivided into England/Scotland/Wales/NI). 
-
-Manon Ragonnet-Cronin from the phylodynamics team investigating COVID at Imperial generated a giant dated tree of Germany for this with 11,000 sequences, relatively evenly sampled through time.
-
-Doing the same process on this new tree gives similar (?) results, if not quite so obviously hump-shaped. This time each point is a different German province.
-
-![](results/ger_mntd_z.svg)
-
-![](results/ger_mpd_z.svg)
+Both MPD and MNTD seem to respond strongly to the spread of the Alpha, and then Delta, showing a sharp increase in phylogenetic clustering with the Alpha wave, then a return towards the baseline with Delta (see figures).
 
 Whats driving these differences in community structure through time?
