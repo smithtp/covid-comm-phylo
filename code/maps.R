@@ -45,7 +45,7 @@ data$f.r <- factor(data$region)
 
 # get some map data to match up with these regions (GID1)
 
-states <- st_read("~/Documents/areadata/data/gis/gadm-states.shp")
+states <- st_read("data/gis/gadm-states.shp")
 
 # can we just merge the states frame into the data?
 # nope, there are some name mismatches (damn)
